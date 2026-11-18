@@ -1,0 +1,124 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800&display=swap');
+
+:root {
+  color-scheme: dark;
+  --bg: #0b1020;
+  --panel: #151d30;
+  --panel2: #1c2940;
+  --line: #34445f;
+  --text: #f3f5fa;
+  --muted: #aab6ca;
+  --gold: #d7b66d;
+  --gold2: #f0d99d;
+  --blue: #5b8bd8;
+  --red: #c36b6b;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(ellipse at 50% -15%, #263653 0, var(--bg) 55%);
+  color: var(--text);
+  font-family: "Noto Sans JP", system-ui, sans-serif;
+}
+button, input, textarea { font: inherit; }
+.site-header {
+  max-width: 1120px; margin: 0 auto; padding: 24px 24px 18px;
+  display: flex; align-items: center; gap: 14px;
+}
+.brand-mark {
+  width: 46px; height: 46px; display: grid; place-items: center;
+  border: 1px solid var(--gold); color: var(--gold2); font-weight: 800;
+  letter-spacing: -2px; transform: skew(-7deg); background: #1b263b;
+}
+.site-header h1 { margin: 0; font-size: 20px; letter-spacing: .04em; }
+.eyebrow { color: var(--gold); font-size: 10px; font-weight: 800; letter-spacing: .16em; margin: 0 0 4px; }
+.site-header .button { margin-left: auto; }
+.app-shell { max-width: 1000px; margin: 0 auto; padding: 0 24px 42px; }
+.panel {
+  background: linear-gradient(145deg, rgba(29,42,65,.97), rgba(17,26,43,.97));
+  border: 1px solid var(--line); border-radius: 14px; padding: 22px;
+  box-shadow: 0 14px 40px rgba(0,0,0,.18);
+}
+.setup-panel { margin: 0 0 22px; }
+.section-heading, .hand-heading { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.section-heading h2, .hand-heading h2 { margin: 0; font-size: 20px; }
+.count-pill, .phase-label {
+  border: 1px solid #7e6b43; color: var(--gold2); background: rgba(215,182,109,.1);
+  padding: 7px 12px; border-radius: 999px; font-size: 12px; white-space: nowrap;
+}
+.muted { color: var(--muted); font-size: 13px; line-height: 1.7; }
+.small, .hint { font-size: 11px; color: var(--muted); }
+.entry-toolbar, .bulk-actions, .setup-footer, .opponent-entry { display: flex; gap: 10px; align-items: center; }
+.entry-toolbar { margin: 18px 0; }
+.button {
+  border: 1px solid transparent; border-radius: 8px; padding: 10px 16px;
+  color: var(--text); cursor: pointer; font-weight: 700; font-size: 13px;
+  transition: transform .12s, filter .12s, border-color .12s;
+}
+.button:hover { filter: brightness(1.12); transform: translateY(-1px); }
+.button:disabled { opacity: .4; cursor: not-allowed; transform: none; }
+.button-primary { background: linear-gradient(180deg, #e0c27c, #b28b45); color: #1b1a17; border-color: #f1d99c; }
+.button-secondary { background: #2a4165; border-color: #4c6b9c; }
+.button-ghost { background: transparent; border-color: #53627a; color: #d5deed; }
+.bulk-entry { background: rgba(5,10,20,.25); border: 1px solid #34445f; padding: 14px; border-radius: 10px; margin-bottom: 14px; }
+.bulk-entry label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 8px; }
+textarea, input {
+  width: 100%; color: var(--text); background: #0d1526; border: 1px solid #42516b;
+  border-radius: 7px; padding: 10px 12px; outline: none;
+}
+textarea:focus, input:focus { border-color: var(--gold); }
+textarea { resize: vertical; line-height: 1.6; }
+.bulk-actions { margin-top: 9px; }
+.card-rows { display: grid; gap: 8px; }
+.card-row { display: grid; grid-template-columns: 1fr 92px 40px; gap: 8px; }
+.card-row input { min-width: 0; }
+.icon-button { border: 1px solid #674d53; color: #f0b9b9; background: #3a252d; border-radius: 7px; cursor: pointer; font-size: 18px; }
+.form-message { min-height: 20px; color: var(--gold2); font-size: 12px; }
+.form-message.error { color: #ffaaaa; }
+.setup-footer { justify-content: flex-end; margin-top: 10px; }
+.opponent-panel { text-align: center; margin-bottom: 22px; padding: 18px; background: linear-gradient(90deg, #17243a, #26344c, #17243a); }
+.opponent-label { color: var(--muted); font-size: 11px; letter-spacing: .18em; }
+.opponent-name { font-size: clamp(21px, 4vw, 30px); font-weight: 800; color: var(--gold2); margin-top: 4px; text-shadow: 0 2px 10px #000; }
+.practice-panel { padding: 12px 0 26px; }
+.hand-heading { margin: 0 0 18px; }
+.hand-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 14px; }
+.hand-card {
+  min-height: 190px; display: flex; flex-direction: column; justify-content: center; align-items: center;
+  padding: 18px 12px; text-align: center; cursor: pointer; user-select: none;
+  background: linear-gradient(155deg, #344761, #18263b 70%);
+  border: 2px solid #8b784d; border-radius: 12px; box-shadow: 0 10px 22px rgba(0,0,0,.28);
+  position: relative; transition: .15s;
+}
+.hand-card::before { content: ""; position: absolute; inset: 6px; border: 1px solid rgba(225,198,137,.28); border-radius: 7px; pointer-events: none; }
+.hand-card:hover { transform: translateY(-3px); }
+.hand-card.selected { border-color: #e47d7d; background: linear-gradient(155deg, #67434a, #302431 75%); box-shadow: 0 0 0 2px rgba(228,125,125,.18), 0 10px 22px rgba(0,0,0,.3); }
+.card-cost { width: 30px; height: 30px; display: grid; place-items: center; border-radius: 50%; background: #d5b56e; color: #211d15; font-weight: 800; margin-bottom: 14px; }
+.card-name { font-weight: 800; font-size: 15px; line-height: 1.65; overflow-wrap: anywhere; }
+.card-state { color: #f2b2b2; font-size: 11px; margin-top: 10px; min-height: 16px; }
+.empty-hand { grid-column: 1/-1; padding: 45px 15px; text-align: center; color: var(--muted); border: 1px dashed #52617a; border-radius: 12px; }
+.instruction { color: var(--muted); text-align: center; font-size: 12px; min-height: 20px; margin: 18px 0 14px; }
+.action-area { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; }
+.action-area .button { min-width: 180px; }
+.opponent-settings { margin-top: 12px; }
+.compact h2 { font-size: 17px; }
+.opponent-entry { margin: 16px 0 10px; }
+.opponent-entry input { flex: 1; }
+.opponent-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; }
+.opponent-list li { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 10px; background: rgba(5,10,20,.24); border-radius: 7px; font-size: 13px; }
+.opponent-list button { background: transparent; color: #efaaaa; border: 0; cursor: pointer; font-size: 12px; }
+.site-footer { text-align: center; color: #78869c; font-size: 10px; padding: 0 20px 24px; }
+.hidden { display: none !important; }
+@media (max-width: 640px) {
+  .site-header { padding: 17px 16px; }
+  .app-shell { padding: 0 14px 30px; }
+  .panel { padding: 16px; }
+  .site-header h1 { font-size: 16px; }
+  .site-header .button { padding: 8px 10px; font-size: 11px; }
+  .hand-grid { gap: 7px; }
+  .hand-card { min-height: 155px; padding: 12px 6px; }
+  .card-name { font-size: 12px; }
+  .card-cost { width: 26px; height: 26px; margin-bottom: 9px; }
+  .phase-label { font-size: 10px; padding: 6px 8px; }
+  .card-row { grid-template-columns: 1fr 65px 34px; }
+}
