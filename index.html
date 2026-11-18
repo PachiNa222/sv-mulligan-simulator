@@ -4,14 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#111827">
-  <title>Shadowverse WB マリガン練習</title>
+  <title>マリガン練習</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <header class="site-header">
     <div class="brand-mark">SV</div>
     <div>
-      <p class="eyebrow">SHADOWVERSE: WORLDS BEYOND</p>
+      <p class="eyebrow">MULLIGAN SIMULATOR</p>
       <h1>マリガン練習</h1>
     </div>
     <button id="openSettings" class="button button-ghost" type="button">デッキ・設定</button>
@@ -35,9 +35,9 @@
       <div class="bulk-entry">
         <label for="bulkInput">まとめて入力（1行に「カード名,枚数」）</label>
         <textarea id="bulkInput" rows="4" placeholder="例：
-連筆の怪異,3
-大遊戯世界,3
-寸裂の盗人,3"></textarea>
+カード名A,3
+カード名B,1
+カード名C,2"></textarea>
         <div class="bulk-actions">
           <button id="importBulk" class="button button-secondary" type="button">入力内容を反映</button>
           <span class="hint">既存のカード行を置き換えます</span>
@@ -82,7 +82,7 @@
         <span class="muted small">このブラウザに保存</span>
       </div>
       <div class="opponent-entry">
-        <input id="opponentInput" type="text" maxlength="40" placeholder="例：ランプドラゴン">
+        <input id="opponentInput" type="text" maxlength="40" placeholder="例：デッキ名A(先攻)">
         <button id="addOpponent" class="button button-secondary" type="button">追加</button>
       </div>
       <ul id="opponentList" class="opponent-list"></ul>
