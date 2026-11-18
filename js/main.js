@@ -252,6 +252,34 @@
       `${history.length.toLocaleString("ja-JP")}件の記録をCSVで出力しました。`;
   }
 
+  // マリガン履歴をリセットする
+  function resetHistory() {
+    if (history.length === 0) {
+      $("historyMessage").textContent = "リセットする履歴がありません。";
+      return;
+    }
+  
+    const confirmed = confirm(
+      "保存されているマリガン履歴をすべて削除します。\nこの操作は取り消せません。本当に削除しますか？"
+    );
+  
+    if (!confirmed) {
+      return;
+    }
+  
+    // localStorageの履歴を空にする
+    if (AppStorage.saveHistory([])) {
+      history = [];
+      updateHistoryCount();
+  
+      $("historyMessage").textContent =
+        "マリガン履歴をすべてリセットしました。";
+    } else {
+      $("historyMessage").textContent =
+        "履歴をリセットできませんでした。";
+    }
+  }
+
   function nextHand() {
     startPractice();
   }
@@ -353,6 +381,8 @@
 
   // CSVダウンロード
   $("downloadCsv").addEventListener("click", downloadCsv);
+  // 履歴リセット
+  $("resetHistory").addEventListener("click", resetHistory);
   $("importBulk").addEventListener("click", () => {
     try {
       const parsed = DeckTools.parseBulk($("bulkInput").value);
