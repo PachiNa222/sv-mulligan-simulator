@@ -122,3 +122,9 @@ textarea { resize: vertical; line-height: 1.6; }
   .phase-label { font-size: 10px; padding: 6px 8px; }
   .card-row { grid-template-columns: 1fr 65px 34px; }
 }
+.history-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
