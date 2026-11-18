@@ -2,6 +2,7 @@
   const $ = id => document.getElementById(id);
   let savedDeck = AppStorage.loadDeck();
   let opponents = AppStorage.loadOpponents();
+  let history = AppStorage.loadHistory();
   let state = null;
   let selected = new Set();
   let exchanged = false;
@@ -135,17 +136,120 @@
   }
 
   function doExchange(all = false) {
-    if (!state || phase !== "initial" || exchanged) return;
+    if (!state || exchanged) return;
+  
     if (!all && selected.size === 0) {
       $("instruction").textContent = "交換するカードを選択してください。";
       return;
     }
-    const ids = all ? new Set(state.hand.map(card => card.id)) : selected;
-    state = Mulligan.exchange(state, ids);
+  
+    const ids = all
+      ? new Set(state.hand.map(card => card.id))
+      : new Set(selected);
+  
+    // 交換前の初期手札と交換対象を記録する
+    const record = {
+      cards: state.hand.map(card => card.name),
+      mulliganed: state.hand.map(card => ids.has(card.id)),
+      opponent: $("opponentName").textContent
+    };
+  
+    // マリガン処理
+    const nextState = Mulligan.exchange(state, ids);
+  
+    // 履歴の保存
+    if (history.length >= AppStorage.maxHistory) {
+      $("historyMessage").textContent =
+        "保存上限に達しています。CSVをダウンロードして記録を退避してください。";
+    } else {
+      history.push(record);
+  
+      if (AppStorage.saveHistory(history)) {
+        $("historyMessage").textContent = "マリガン結果を保存しました。";
+      } else {
+        history.pop();
+        $("historyMessage").textContent =
+          "保存できませんでした。ブラウザの保存容量を確認してください。";
+      }
+    }
+  
+    updateHistoryCount();
+  
+    state = nextState;
     selected = new Set();
     exchanged = true;
     phase = "after";
+  
     renderPractice();
+  }
+
+    // 履歴の保存件数を画面に表示する
+  function updateHistoryCount() {
+    $("historyCount").textContent =
+      `${history.length.toLocaleString("ja-JP")} / ${AppStorage.maxHistory.toLocaleString("ja-JP")} 件`;
+  }
+  
+  // CSVのセル内に含まれるダブルクォートをエスケープする
+  function csvCell(value) {
+    const text = String(value ?? "");
+    return `"${text.replace(/"/g, '""')}"`;
+  }
+  
+  // CSVファイルをダウンロードする
+  function downloadCsv() {
+    if (history.length === 0) {
+      $("historyMessage").textContent =
+        "まだ記録がありません。マリガンを完了すると保存されます。";
+      return;
+    }
+  
+    const headers = [
+      "1枚目のカード",
+      "2枚目のカード",
+      "3枚目のカード",
+      "4枚目のカード",
+      "1枚目をマリガンしたかどうか",
+      "2枚目をマリガンしたかどうか",
+      "3枚目をマリガンしたかどうか",
+      "4枚目をマリガンしたかどうか",
+      "対戦相手デッキ名"
+    ];
+  
+    const lines = [headers.map(csvCell).join(",")];
+  
+    history.forEach(record => {
+      const row = [
+        ...(record.cards || ["", "", "", ""]).slice(0, 4),
+        ...(record.mulliganed || [false, false, false, false])
+          .slice(0, 4)
+          .map(value => value ? "TRUE" : "FALSE"),
+        record.opponent || ""
+      ];
+  
+      lines.push(row.map(csvCell).join(","));
+    });
+  
+    // Excelで日本語が文字化けしにくいようUTF-8 BOMを付ける
+    const blob = new Blob(
+      ["\uFEFF" + lines.join("\r\n")],
+      { type: "text/csv;charset=utf-8;" }
+    );
+  
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    const date = new Date().toISOString().slice(0, 10);
+  
+    link.href = url;
+    link.download = `mulligan-history-${date}.csv`;
+  
+    document.body.append(link);
+    link.click();
+    link.remove();
+  
+    URL.revokeObjectURL(url);
+  
+    $("historyMessage").textContent =
+      `${history.length.toLocaleString("ja-JP")}件の記録をCSVで出力しました。`;
   }
 
   function nextHand() {
@@ -241,12 +345,14 @@
   $("cancelSettings").addEventListener("click", () => showSetup(false));
   $("startPractice").addEventListener("click", startPractice);
   $("addOpponent").addEventListener("click", addOpponent);
-
-  // Enterキーでは登録せず、「追加」ボタンを押したときだけ登録する。
+  
+  // Enterキーでは登録せず、「追加」ボタンを押したときだけ登録する
   $("opponentInput").addEventListener("keydown", e => {
     if (e.key === "Enter") e.preventDefault();
   });
 
+  // CSVダウンロード
+  $("downloadCsv").addEventListener("click", downloadCsv);
   $("importBulk").addEventListener("click", () => {
     try {
       const parsed = DeckTools.parseBulk($("bulkInput").value);
@@ -263,5 +369,6 @@
   fillEditor(savedDeck || []);
   if (!savedDeck) showSetup(true);
   renderOpponents();
+  updateHistoryCount();
   renderPractice();
 })();
