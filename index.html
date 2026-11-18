@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111827">
+  <title>Shadowverse WB マリガン練習</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand-mark">SV</div>
+    <div>
+      <p class="eyebrow">SHADOWVERSE: WORLDS BEYOND</p>
+      <h1>マリガン練習</h1>
+    </div>
+    <button id="openSettings" class="button button-ghost" type="button">デッキ・設定</button>
+  </header>
+
+  <main class="app-shell">
+    <section id="setupPanel" class="panel setup-panel" aria-labelledby="setupTitle">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">DECK SETTINGS</p>
+          <h2 id="setupTitle">デッキを登録</h2>
+        </div>
+        <span class="count-pill" id="totalCount">0 / 40 枚</span>
+      </div>
+      <p class="muted">カード名と枚数を入力してください。合計40枚になると保存できます。同じカードを複数枚登録すると、その枚数に応じた確率で引きます。</p>
+
+      <div class="entry-toolbar">
+        <button id="addCard" class="button button-secondary" type="button">＋ カード行を追加</button>
+        <button id="clearCards" class="button button-ghost" type="button">入力をクリア</button>
+      </div>
+      <div class="bulk-entry">
+        <label for="bulkInput">まとめて入力（1行に「カード名,枚数」）</label>
+        <textarea id="bulkInput" rows="4" placeholder="例：
+連筆の怪異,3
+大遊戯世界,3
+寸裂の盗人,3"></textarea>
+        <div class="bulk-actions">
+          <button id="importBulk" class="button button-secondary" type="button">入力内容を反映</button>
+          <span class="hint">既存のカード行を置き換えます</span>
+        </div>
+      </div>
+      <div id="cardRows" class="card-rows"></div>
+      <p id="deckMessage" class="form-message" role="status"></p>
+      <div class="setup-footer">
+        <button id="saveDeck" class="button button-primary" type="button">デッキを保存</button>
+        <button id="cancelSettings" class="button button-ghost" type="button">戻る</button>
+      </div>
+    </section>
+
+    <section id="opponentPanel" class="panel opponent-panel">
+      <div class="opponent-label">対戦相手</div>
+      <div id="opponentName" class="opponent-name">デッキ未登録</div>
+    </section>
+
+    <section id="practicePanel" class="practice-panel">
+      <div class="hand-heading">
+        <div>
+          <p class="eyebrow">YOUR INITIAL HAND</p>
+          <h2 id="handTitle">初期手札</h2>
+        </div>
+        <div id="phaseLabel" class="phase-label">練習を開始してください</div>
+      </div>
+      <div id="hand" class="hand-grid">
+        <div class="empty-hand">デッキを登録すると練習を開始できます。</div>
+      </div>
+      <p id="instruction" class="instruction">デッキを登録すると、40枚からランダムに4枚引きます。</p>
+      <div id="actionArea" class="action-area">
+        <button id="startPractice" class="button button-primary" type="button">初期手札を引く</button>
+      </div>
+    </section>
+
+    <section class="panel opponent-settings">
+      <div class="section-heading compact">
+        <div>
+          <p class="eyebrow">OPPONENT DECK LIST</p>
+          <h2>対戦相手デッキ名</h2>
+        </div>
+        <span class="muted small">このブラウザに保存</span>
+      </div>
+      <div class="opponent-entry">
+        <input id="opponentInput" type="text" maxlength="40" placeholder="例：ランプドラゴン">
+        <button id="addOpponent" class="button button-secondary" type="button">追加</button>
+      </div>
+      <ul id="opponentList" class="opponent-list"></ul>
+      <p class="hint">リストが空の場合、対戦相手名は表示されません。ページを更新してもリストは保持されます。</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">個人用のマリガン練習ツール / データはこのブラウザ内に保存されます</footer>
+  <script src="js/storage.js"></script>
+  <script src="js/deck.js"></script>
+  <script src="js/mulligan.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
